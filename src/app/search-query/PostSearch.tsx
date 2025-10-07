@@ -1,13 +1,29 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/use-debounce";
+import { fetchData } from "@/lib/fetch-utils";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { Post } from "../api/posts/data";
 
 export default function PostSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
+  const { 
+    data: posts,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["posts", "search", debouncedSearchTerm],
+    queryFn: () => fetchData<Post[]>(`/api/posts/search?search=${debouncedSearchTerm}`),
+    enabled: !!debouncedSearchTerm,
+  })
+
   return (
     <div className="space-y-4">
-      {/* <div className="flex gap-2">
+      <div className="flex gap-2">
           <Input
             type="text"
             placeholder="Search posts..."
@@ -49,7 +65,7 @@ export default function PostSearch() {
               </li>
             ))}
           </ul>
-        )} */}
+        )}
     </div>
   );
 }
