@@ -1,7 +1,7 @@
 import { formatRelativeDate } from "@/lib/utils";
 import { CommentForm } from "./CommentForm";
 import { Button } from "@/components/ui/button";
-import { useCommentsQuery } from "./use-comment-hooks";
+import { useCommentsQuery } from "./use-comments-hooks";
 
 export default function InfiniteComments() {
 

@@ -1,12 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useCreateCommentMutation } from "./use-comment-hooks";
+// import { useCreateCommentMutation } from "./use-comments-hooks";
 import { toast } from "sonner";
+import { useCreateCommentMutationOptimistic } from "./use-comments-hooks-optimistic";
 
 export function CommentForm() {
   const [commentText, setCommentText] = useState("");
-  const mutation = useCreateCommentMutation();
+
+  // const mutation = useCreateCommentMutation();
+  const mutation = useCreateCommentMutationOptimistic();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -37,7 +40,7 @@ export function CommentForm() {
         className="flex-1"
         disabled={mutation.isPending}
       />
-      <Button type="submit" disabled={!commentText.trim()}>
+      <Button type="submit" disabled={!commentText.trim() || mutation.isPending}>
         {mutation.isPending ? "Posting..." : "Post"}
       </Button>
     </form>
